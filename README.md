@@ -51,20 +51,18 @@
 ├── package.json
 └── spec.md
 ```
-````
 
 ## 2. Структура даних та зв'язки (ER-діаграма)
 
-```mermaid
+```
 erDiagram
-    CATEGORY ||--o{ PRODUCT : contains
-    PRODUCT }o--o{ ORDER : includes
-    USER ||--o{ ORDER : places
+CATEGORY ||--o{ PRODUCT : contains
+PRODUCT }o--o{ ORDER : includes
+USER ||--o{ ORDER : places
 
     CATEGORY {
         ObjectId _id PK
         string name
-        string slug
     }
 
     PRODUCT {
@@ -74,15 +72,15 @@ erDiagram
         ObjectId category_id FK
         number price
         number stock
-        string carModel
-        string description
+        array compatibility
+        object attributes "Поліморфні характеристики залежно від категорії (напр. в'язкість для мастила, діаметр для колодок)"
     }
 
     USER {
         ObjectId _id PK
         string name
         string email
-        string phone
+        string passwordHash
         string role
     }
 
@@ -125,3 +123,8 @@ erDiagram
 Після цього відкрий **GitHub Desktop**, напиши коміт `docs: add project spec` і натискай **Commit**. Маякни, як буде готово!
 
 ```
+
+```
+
+```
+````
