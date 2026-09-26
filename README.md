@@ -54,7 +54,8 @@
 ```mermaid
 erDiagram
     CATEGORY ||--o{ PRODUCT : contains
-    PRODUCT }o--o{ ORDER : includes
+    USER ||--o{ CART : has
+    USER ||--o{ WISHLIST : has
     USER ||--o{ ORDER : places
 
     CATEGORY {
@@ -65,29 +66,42 @@ erDiagram
     PRODUCT {
         ObjectId _id PK
         string name
-        string article
+        string SKU
         ObjectId category_id FK
         number price
         number stock
         array compatibility
-        object attributes "Поліморфні характеристики залежно від категорії"
+        object attributes "Поліморфні характеристики (напр. в'язкість для мастила)"
     }
 
     USER {
         ObjectId _id PK
-        string name
+        string firstName
+        string lastName
         string email
         string passwordHash
-        string role
+        string phoneNumber
+    }
+
+    CART {
+        ObjectId _id PK
+        ObjectId user_id FK
+        array items "Масив товарів у кошику [{product_id, quantity}]"
+    }
+
+    WISHLIST {
+        ObjectId _id PK
+        ObjectId user_id FK
+        array products "Масив обраних товарів [product_id]"
     }
 
     ORDER {
         ObjectId _id PK
         ObjectId user_id FK
-        array items
-        number totalAmount
-        string status
-        string shippingAddress
+        array items "Замовлені товари з фіксацією ціни"
+        object shipment "Адреса, місто, країна, статус доставки"
+        object payment "Метод оплати, статус, сума"
+        string status "pending, processing, shipped, completed"
         date createdAt
     }
 
